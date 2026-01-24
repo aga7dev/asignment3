@@ -33,11 +33,11 @@ public class RentalService {
             throw new InvalidInputException("End date must be after or equal start date");
         }
 
-        // FK must exist: проверяем через service
+
         Car car = carService.getById(carId);
         Customer customer = customerService.getById(customerId);
 
-        // Бизнес-правило: car must be AVAILABLE
+
         if (!"AVAILABLE".equalsIgnoreCase(car.getStatus())) {
             throw new InvalidInputException("Car is not available for rental");
         }
@@ -55,7 +55,7 @@ public class RentalService {
 
         Rental created = rentalRepo.create(rental);
 
-        // после аренды ставим RENTED
+
         carService.markRented(carId);
 
         return created;
@@ -75,7 +75,7 @@ public class RentalService {
     public void delete(int id) {
         Rental rental = getById(id);
 
-        // Бизнес-правило: после удаления rental вернем car в AVAILABLE
+
         int carId = rental.getCar().getId();
 
         boolean ok = rentalRepo.delete(id);

@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class Rental {
     private int id;
     private String name;
-    private Car car;               // composition/aggregation
-    private Customer customer;     // composition/aggregation
+    private Car car;
+    private Customer customer;
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalPrice;

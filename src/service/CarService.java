@@ -23,7 +23,7 @@ public class CarService {
             throw new DuplicateResourceException("Car with plate '" + car.getPlateNumber() + "' already exists");
         }
 
-        // простое правило: статус по умолчанию
+
         if (car.getStatus() == null || car.getStatus().trim().isEmpty()) {
             car.setStatus("AVAILABLE");
         }
@@ -65,7 +65,7 @@ public class CarService {
         Car car = repo.getById(id);
         if (car == null) throw new ResourceNotFoundException("Car not found, id=" + id);
 
-        // Бизнес-правило: нельзя удалить RENTED
+
         if ("RENTED".equalsIgnoreCase(car.getStatus())) {
             throw new InvalidInputException("Cannot delete car because status is RENTED");
         }

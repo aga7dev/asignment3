@@ -22,6 +22,8 @@ public class RentalRepository {
     public Rental create(Rental rental) {
         String sql = "INSERT INTO rentals(name, car_id, customer_id, start_date, end_date, total_price) " +
                 "VALUES(?,?,?,?,?,?) RETURNING id";
+        System.out.println("DEBUG: RentalRepository.create called");
+
 
         try (Connection con = db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

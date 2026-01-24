@@ -8,21 +8,27 @@ import service.RentalService;
 import utils.DatabaseConnection;
 
 public class Main {
+
     public static void main(String[] args) {
+
         DatabaseConnection db = new DatabaseConnection();
 
 
-        CarRepository carRepo = new CarRepository(db);
-        CustomerRepository customerRepo = new CustomerRepository(db);
-        RentalRepository rentalRepo = new RentalRepository(db);
+        CarRepository carRepository = new CarRepository(db);
+        CustomerRepository customerRepository = new CustomerRepository(db);
+        RentalRepository rentalRepository = new RentalRepository(db);
 
 
-        CarService carService = new CarService(carRepo);
-        CustomerService customerService = new CustomerService(customerRepo);
-        RentalService rentalService = new RentalService(rentalRepo, carService, customerService);
+        CarService carService = new CarService(carRepository);
+        CustomerService customerService = new CustomerService(customerRepository);
+        RentalService rentalService =
+                new RentalService(rentalRepository, carService, customerService);
 
 
-        CarRentalController controller = new CarRentalController(carService, customerService, rentalService);
+        CarRentalController controller =
+                new CarRentalController(carService, customerService, rentalService);
+
+
         controller.start();
     }
 }

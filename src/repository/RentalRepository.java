@@ -6,13 +6,15 @@ import model.Car;
 import model.Customer;
 import model.Rental;
 import utils.DatabaseConnection;
+import repository.interfaces.CrudRepository;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RentalRepository {
+public class RentalRepository implements CrudRepository<Rental> {
+
     private final DatabaseConnection db;
 
     public RentalRepository(DatabaseConnection db) {
@@ -158,4 +160,26 @@ public class RentalRepository {
             throw new DatabaseOperationException("Failed to delete rental", e);
         }
     }
+    @Override
+    public boolean update(int id, Rental rental) {
+        String sql = "UPDATE rentals SET name=?, car_id=?, customer_id=?, start_date=?, end_date=?, total_price=? WHERE id=?";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, rental.getName());
+            ps.setInt(2, rental.getCar().getId());
+            ps.setInt(3, rental.getCustomer().getId());
+            ps.setDate(4, Date.valueOf(rental.getStartDate()));
+            ps.setDate(5, Date.valueOf(rental.getEndDate()));
+            ps.setDouble(6, rental.getTotalPrice());
+            ps.setInt(7, id);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("Failed to update rental", e);
+        }
+    }
+
 }

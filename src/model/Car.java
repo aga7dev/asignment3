@@ -1,12 +1,17 @@
 package model;
 
+
+
 import interfaces.PricedItem;
 import interfaces.Validatable;
+
 
 public class Car extends BaseEntity implements Validatable, PricedItem {
     private String plateNumber;
     private double dailyRate;
     private String status;
+    private Engine engine;
+
 
     public Car() {
     }
@@ -50,6 +55,15 @@ public class Car extends BaseEntity implements Validatable, PricedItem {
         return dailyRate * days;
     }
 
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+
     public String getPlateNumber() {
         return plateNumber;
     }
@@ -73,5 +87,6 @@ public class Car extends BaseEntity implements Validatable, PricedItem {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }
 

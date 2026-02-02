@@ -14,6 +14,8 @@ public abstract class BaseEntity {
 
     public abstract String getEntityType();
     public abstract String shortInfo();
+    public abstract void validate();
+
 
     public boolean hasValidId(){
         return id > 0;

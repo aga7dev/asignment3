@@ -5,6 +5,8 @@ import exception.InvalidInputException;
 import exception.ResourceNotFoundException;
 import model.Car;
 import repository.CarRepository;
+import utils.SortingUtils;
+
 
 import java.util.List;
 
@@ -34,6 +36,12 @@ public class CarService {
     public List<Car> getAll() {
         return repo.getAll();
     }
+    public List<Car> getAllSortedByPrice() {
+        List<Car> cars = repo.getAll();
+        SortingUtils.sort(cars, (a, b) -> Double.compare(a.getDailyRate(), b.getDailyRate()));
+        return cars;
+    }
+
 
     public Car getById(int id) {
         if (id <= 0) throw new InvalidInputException("Car id must be > 0");
@@ -58,6 +66,7 @@ public class CarService {
         if (!ok) throw new ResourceNotFoundException("Car not updated, id=" + id);
         return repo.getById(id);
     }
+
 
     public void delete(int id) {
         if (id <= 0) throw new InvalidInputException("Car id must be > 0");
@@ -85,4 +94,12 @@ public class CarService {
         car.setStatus("AVAILABLE");
         repo.update(carId, car);
     }
+    public Car getCheapestAvailableCar() {
+        Car car = repo.getCheapestAvailableCar();
+        if (car == null) {
+            throw new ResourceNotFoundException("No available cars found");
+        }
+        return car;
+    }
+
 }

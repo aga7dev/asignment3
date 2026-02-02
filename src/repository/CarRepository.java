@@ -1,4 +1,3 @@
-
 package repository;
 
 import exception.DatabaseOperationException;
@@ -7,8 +6,10 @@ import utils.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import repository.interfaces.CrudRepository;
 
-public class CarRepository {
+public class CarRepository implements CrudRepository<Car> {
+
     private final DatabaseConnection db;
 
     public CarRepository(DatabaseConnection db) {
@@ -139,4 +140,29 @@ public class CarRepository {
             throw new DatabaseOperationException("Failed to delete car", e);
         }
     }
+    public Car getCheapestAvailableCar() {
+        String sql = "SELECT id, name, plate_number, daily_rate, status " +
+                "FROM cars WHERE status = 'AVAILABLE' " +
+                "ORDER BY daily_rate ASC LIMIT 1";
+
+        try (Connection con = db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return new Car(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("plate_number"),
+                        rs.getDouble("daily_rate"),
+                        rs.getString("status")
+                );
+            }
+            return null;
+
+        } catch (SQLException e) {
+            throw new DatabaseOperationException("Failed to get cheapest available car", e);
+        }
+    }
+
 }

@@ -3,12 +3,14 @@ package repository;
 import utils.DatabaseConnection;
 import exception.DatabaseOperationException;
 import model.Customer;
+import repository.interfaces.CrudRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerRepository {
+public class CustomerRepository implements CrudRepository<Customer> {
+
     private final DatabaseConnection db;
 
     public CustomerRepository(DatabaseConnection db) {

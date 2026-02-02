@@ -26,12 +26,31 @@ public class Rental {
     }
 
     public String shortInfo() {
-        int carId = (car == null) ? 0 : car.getId();
-        int customerId = (customer == null) ? 0 : customer.getId();
-        return "Rental{id=" + id + ", name=" + name + ", carId=" + carId +
-                ", customerId=" + customerId + ", start=" + startDate + ", end=" + endDate +
-                ", total=" + totalPrice + "}";
+        String carInfo = (car == null)
+                ? "none"
+                : car.getName() + " (" + car.getPlateNumber() + ")";
+
+        String engineInfo = "none";
+        if (car != null && car.getEngine() != null) {
+            engineInfo = car.getEngine().getEngineType() + " " + car.getEngine().getVolume();
+        }
+
+        String customerInfo = (customer == null)
+                ? "none"
+                : customer.getName();
+
+        return "Rental{id=" + id +
+                ", name=" + name +
+                ", car=" + carInfo +
+                ", engine=" + engineInfo +
+                ", customer=" + customerInfo +
+                ", start=" + startDate +
+                ", end=" + endDate +
+                ", total=" + totalPrice +
+                "}";
     }
+
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

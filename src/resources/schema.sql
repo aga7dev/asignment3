@@ -10,6 +10,18 @@ CREATE TABLE cars (
                       status VARCHAR(20) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS engines (
+                                       id SERIAL PRIMARY KEY,
+                                       car_id INT NOT NULL UNIQUE,
+                                       engine_type VARCHAR(30) NOT NULL,
+    volume DOUBLE PRECISION NOT NULL,
+    CONSTRAINT fk_engine_car
+    FOREIGN KEY (car_id)
+    REFERENCES cars(id)
+    ON DELETE CASCADE
+    );
+
+
 CREATE TABLE customers (
                            id SERIAL PRIMARY KEY,
                            name VARCHAR(100) NOT NULL,
@@ -34,17 +46,6 @@ INSERT INTO customers(name, email) VALUES
                                        ('Aruzhan S.', 'aruzhan@mail.com'),
                                        ('Dias K.', 'dias@mail.com');
 
-
-CREATE TABLE IF NOT EXISTS engines (
-                                       id SERIAL PRIMARY KEY,
-                                       car_id INT NOT NULL UNIQUE,
-                                       engine_type VARCHAR(30) NOT NULL,
-    volume DOUBLE PRECISION NOT NULL,
-    CONSTRAINT fk_engine_car
-    FOREIGN KEY (car_id)
-    REFERENCES cars(id)
-    ON DELETE CASCADE
-    );
 
 INSERT INTO engines (car_id, engine_type, volume) VALUES
                                                       (1, 'petrol', 2.0),

@@ -36,6 +36,8 @@ public class CarRentalController {
             System.out.println("\nMenu:");
             System.out.println("1) Create Car");
             System.out.println("2) List Cars");
+            System.out.println("11) List Cars Sorted By Price");
+            System.out.println("12) Show cheapest available car");
             System.out.println("3) Update Car");
             System.out.println("4) Delete Car");
             System.out.println("5) Create Customer");
@@ -54,6 +56,8 @@ public class CarRentalController {
                 switch (choice) {
                     case 1 -> createCar(in);
                     case 2 -> listCars();
+                    case 11 -> listCarsSortedByPrice();
+                    case 12 -> showCheapestAvailableCar();
                     case 3 -> updateCar(in);
                     case 4 -> deleteCar(in);
                     case 5 -> createCustomer(in);
@@ -94,6 +98,23 @@ public class CarRentalController {
             System.out.println(new ApiResponse(true, "No cars", null).toJsonLikeString());
         }
     }
+    private void listCarsSortedByPrice() {
+        List<Car> cars = carService.getAllSortedByPrice();
+
+        for (Car c : cars) {
+            System.out.println(new ApiResponse(true, "OK", c.shortInfo()).toJsonLikeString());
+        }
+
+        if (cars.isEmpty()) {
+            System.out.println(new ApiResponse(true, "No cars", null).toJsonLikeString());
+        }
+    }
+    private void showCheapestAvailableCar() {
+        Car car = carService.getCheapestAvailableCar();
+        System.out.println(new ApiResponse(true, "Cheapest available car", car.shortInfo()).toJsonLikeString());
+    }
+
+
 
     private void updateCar(InputHelper in) {
         int id = in.readInt("Car id to update: ");
@@ -107,6 +128,9 @@ public class CarRentalController {
 
         System.out.println(new ApiResponse(true, "Car updated", updated.shortInfo()).toJsonLikeString());
     }
+
+
+
 
     private void deleteCar(InputHelper in) {
         int id = in.readInt("Car id to delete: ");
